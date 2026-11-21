@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ALI LIMS PRO LOGIN</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+
+background:url("lab.jpg");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+}
+
+.login-box{
+width:450px;
+background:rgba(255,255,255,0.92);
+padding:40px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 0 25px rgba(0,0,0,0.4);
+}
+
+.logo{
+font-size:80px;
+}
+
+h1{
+color:#0a6b3f;
+margin-bottom:10px;
+}
+
+p{
+color:#555;
+}
+
+input{
+width:92%;
+padding:14px;
+margin:10px 0;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#0a9e2c;
+color:white;
+font-size:18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#087922;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+<div class="logo">🧬</div>
+
+<h1>ALI LIMS PRO</h1>
+
+<p>Laboratory Information Management System</p>
+
+<input type="text" id="user" placeholder="Username">
+
+<input type="password" id="pass" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+</div>
+
+<script>
+
+function login(){
+
+let user=document.getElementById("user").value;
+let pass=document.getElementById("pass").value;
+
+if(user!=="" && pass!==""){
+window.location.href="index.html";
+}else{
+alert("Please enter username and password");
+}
+
+}
+
+</script>
+
+</body>
+</html>

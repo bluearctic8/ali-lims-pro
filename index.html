@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ALI LIMS PRO</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+max-width:1200px;
+margin:auto;
+padding:20px;
+
+background:url("lab.jpg");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+}
+
+.main-box{
+background:rgba(255,255,255,0.92);
+padding:20px;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+.logo{
+font-size:90px;
+text-align:center;
+}
+
+h1{
+text-align:center;
+}
+
+.dashboard{
+background:#4CAF50;
+color:white;
+padding:20px;
+border-radius:15px;
+font-size:24px;
+margin-bottom:20px;
+}
+
+input{
+padding:12px;
+margin:5px;
+width:220px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+button{
+padding:10px;
+border:none;
+cursor:pointer;
+border-radius:8px;
+}
+
+.add{
+background:green;
+color:white;
+}
+
+.delete{
+background:red;
+color:white;
+}
+
+.status{
+background:#2196F3;
+color:white;
+}
+
+.logout{
+background:black;
+color:white;
+float:right;
+}
+
+.search{
+width:320px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+background:white;
+}
+
+th{
+background:#4CAF50;
+color:white;
+}
+
+th,td{
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="main-box">
+
+<button class="logout" onclick="logout()">
+Logout
+</button>
+
+<div class="logo">🧬</div>
+
+<h1>ALI LIMS PRO</h1>
+
+<div class="dashboard">
+Total Samples:
+<span id="totalSamples">0</span>
+</div>
+
+<h2>Add Sample</h2>
+
+<input id="sampleId" placeholder="Sample ID">
+
+<input id="patientName" placeholder="Patient Name">
+
+<input id="testName" placeholder="Test Name">
+
+<button class="add" onclick="addSample()">
+Add Sample
+</button>
+
+<br><br>
+
+<input
+class="search"
+id="searchBox"
+placeholder="Search Sample ID..."
+onkeyup="displaySamples()">
+
+<table>
+
+<thead>
+<tr>
+<th>Sample ID</th>
+<th>Patient Name</th>
+<th>Test Name</th>
+<th>Status</th>
+<th>Delete</th>
+</tr>
+</thead>
+
+<tbody id="sampleTable">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let samples =
+JSON.parse(localStorage.getItem("samples")) || [];
+
+displaySamples();
+
+function saveData(){
+localStorage.setItem(
+"samples",
+JSON.stringify(samples)
+);
+}
+
+function addSample(){
+
+let sampleId =
+document.getElementById("sampleId").value;
+
+let patientName =
+document.getElementById("patientName").value;
+
+let testName =
+document.getElementById("testName").value;
+
+if(
+sampleId==="" ||
+patientName==="" ||
+testName===""
+){
+alert("Please fill all fields");
+return;
+}
+
+samples.push({
+sampleId:sampleId,
+patientName:patientName,
+testName:testName,
+status:"Pending"
+});
+
+saveData();
+
+document.getElementById("sampleId").value="";
+document.getElementById("patientName").value="";
+document.getElementById("testName").value="";
+
+displaySamples();
+}
+
+function deleteSample(index){
+
+if(confirm("Delete sample?")){
+
+samples.splice(index,1);
+
+saveData();
+
+displaySamples();
+
+}
+
+}
+
+function toggleStatus(index){
+
+if(samples[index].status==="Pending"){
+samples[index].status="Completed";
+}else{
+samples[index].status="Pending";
+}
+
+saveData();
+
+displaySamples();
+}
+
+function displaySamples(){
+
+let table =
+document.getElementById("sampleTable");
+
+let search =
+document.getElementById("searchBox")
+.value
+.toLowerCase();
+
+table.innerHTML="";
+
+samples.forEach((sample,index)=>{
+
+if(sample.sampleId
+.toLowerCase()
+.includes(search)){
+
+table.innerHTML += `
+<tr>
+<td>${sample.sampleId}</td>
+<td>${sample.patientName}</td>
+<td>${sample.testName}</td>
+
+<td>
+<button
+class="status"
+onclick="toggleStatus(${index})">
+${sample.status}
+</button>
+</td>
+
+<td>
+<button
+class="delete"
+onclick="deleteSample(${index})">
+Delete
+</button>
+</td>
+
+</tr>
+`;
+
+}
+
+});
+
+document.getElementById("totalSamples")
+.innerText=samples.length;
+
+}
+
+function logout(){
+window.location.href="login.html";
+}
+
+</script>
+
+</body>
+</html>
